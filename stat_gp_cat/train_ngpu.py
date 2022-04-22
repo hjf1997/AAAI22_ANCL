@@ -6,7 +6,7 @@ import torch
 import gpytorch
 from matplotlib import pyplot as plt
 from tqdm import trange
-from early_stopping_pytorch.pytorchtools import EarlyStopping
+from pytorchtools import EarlyStopping
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
@@ -125,10 +125,12 @@ if(data_str == "march"):
     str_data = "_mar"
 elif(data_str == "march_nsgp"):
     str_data = "_mar_nsgp"
+elif(data_str == "nsgp"):
+    str_data = '_nsgp'
 else:
     str_data = ""
 
-train_x,train_y,test_x,test_y, cat_indices,DELTA = return_data(fold=fold,type='time_feature',scale=True,data_str = str_data)
+train_x,train_y,test_x,test_y, cat_indices,DELTA = return_data(fold=fold,type=r'NP/time_feature',scale=True,data_str = str_data)
 
 print("Fold: ",fold)
 print("Random State: ", random_state)
@@ -170,7 +172,7 @@ likelihood = gpytorch.likelihoods.GaussianLikelihood()
 # model = ExactGPModel(train_x, train_y, likelihood, gpytorch_kernel).to(device)
 cat_dims = cat_indices
 # print(train_y.unsqueeze(1).shape)
-n_devices=2
+n_devices=3
 model = MixedSingleTaskGP(train_X=train_x,train_Y=train_y.unsqueeze(1), cat_dims=cat_dims, cont_kernel_factory=cont_kernel_factory, likelihood=likelihood, output_device=device, n_devices=n_devices).to(device)
 # print(model)
 # print("kernel",model.covar_module)

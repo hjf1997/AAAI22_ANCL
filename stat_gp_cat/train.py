@@ -6,7 +6,7 @@ import torch
 import gpytorch
 from matplotlib import pyplot as plt
 from tqdm import trange
-from early_stopping_pytorch.pytorchtools import EarlyStopping
+from pytorchtools import EarlyStopping
 import pandas as pd
 import numpy as np
 from sklearn.metrics import mean_squared_error
@@ -73,10 +73,12 @@ if(data_str == "march"):
     str_data = "_mar"
 elif(data_str == "march_nsgp"):
     str_data = "_mar_nsgp"
+elif(data_str == "nsgp"):
+    str_data = '_nsgp'
 else:
     str_data = ""
 
-train_x,train_y,test_x,test_y, cat_indices = return_data(fold=fold,type='time_feature',scale=True,data_str = str_data)
+train_x,train_y,test_x,test_y, cat_indices, DELTA = return_data(fold=fold,type='NP/time_feature',scale=True,data_str = str_data)
 
 print("Fold: ",fold)
 print("Random State: ", random_state)
@@ -110,7 +112,7 @@ model = MixedSingleTaskGP(train_X=train_x,train_Y=train_y.unsqueeze(1), cat_dims
 
 kwargs= {'epochs':400, 'warm_up':5, 'lr':0.05, 'random_state':random_state}
 loss = train_model(model, train_x, train_y, **kwargs)
-observed_pred = predict(model, test_x)
+observed_pred = predict(model, test_x) + DELTA
 print("Loss: ", loss)
 print("RMSE: ", math.sqrt(mean_squared_error(test_y, observed_pred.mean.cpu())))
 

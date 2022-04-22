@@ -4,7 +4,6 @@ import os
 m_name = sys.argv[1]
 optim_name = sys.argv[2]
 c_fold = sys.argv[3]
-node = sys.argv[4]
 nsgp_iters = sys.argv[5]
 gp_iters = sys.argv[6]
 restarts = sys.argv[7]
@@ -21,4 +20,3 @@ with open(m_name+c_fold+'.sh', 'w') as f:
 	nsgp_iters, gp_iters, restarts, div, sampling, Xcols, kernel, time_kernel, '\n']))
 	f.write(' '.join(['python gp_test.py', m_name, c_fold, sampling, Xcols, kernel, time_kernel, '\n']))
 
-os.system('sbatch '+ m_name +c_fold+'.sh')

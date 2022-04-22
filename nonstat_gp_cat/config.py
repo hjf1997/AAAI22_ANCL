@@ -1,4 +1,4 @@
 class Config:
-    data_path = '/workspace/Username/AAAI_latest/AAAI22/data/time_feature/'
-    device = 'cuda'
-    res_path = '/workspace/Username/AAAI_latest/AAAI22/experiments/results/'
+    data_path = '/home/junfeng/ASGP/data/NP/NO2/time_feature/'
+    device = 'cuda:0'
+    res_path = '/home/junfeng/ASGP/experiments/NO2/rbf2/'

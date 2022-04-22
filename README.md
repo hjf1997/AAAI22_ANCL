@@ -1,7 +1,8 @@
 # AAAI22
-* [PDF](https://nipunbatra.github.io/papers/2022/aaai_22_air.pdf)
-* [Author Response during the rebuttal](AuthorResponse.md)
-* [Appendix](appendix.pdf)
+
+EDIT:
+* [Extended Author Response](https://github.com/ouranonymoussubmission/AAAI22/blob/main/AuthorResponse.md)
+* [Extended Appendix](https://github.com/ouranonymoussubmission/AAAI22/blob/main/Appendix_v2.pdf)
 
 ## Main approach configuration
 

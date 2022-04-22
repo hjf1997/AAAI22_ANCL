@@ -7,10 +7,10 @@ class Data:
         self.fold = fold
         self.Xcols = Xcols.split('@')
         #######
-        self.suffix = 'mar_nsgp'
+        self.suffix = 'nsgp'
         self.factor = 4 # Factor of data for Xm
-        self.start = '2015-03-01'
-        self.end = '2015-03-31'
+        self.start = '2015-01-01'
+        self.end = '2015-01-15'
         self.get_Xm = get_Xm
         self.seed = seed
         self.all_cont_cols = ['longitude', 'latitude', 'temperature', 'humidity', 'wind_speed', 'delta_t']
@@ -19,9 +19,9 @@ class Data:
     def common(self, data):
         data['time'] = pd.to_datetime(data['time'])
         data = data.set_index('time')
-        data = data[self.start:self.end]
+        # data = data[self.start:self.end]
         X = data[self.Xcols]
-        y = data[['PM25_Concentration']]
+        y = data[['NO2_Concentration']]
         return X, y, data
 
     def load_train(self):
@@ -57,13 +57,12 @@ class Data:
             Xm = torch.tensor(Xm.values, dtype=torch.float32)
             return X, y, Xm
 
-    def load_test(self):
-        test_data = pd.read_csv(Config.data_path+'fold'+self.fold+'/test_data_'+self.suffix+'.csv.gz')
-        test_output = pd.read_csv(Config.data_path+'fold'+self.fold+'/test_output_'+self.suffix+'.csv.gz')
-
-        test_data['PM25_Concentration'] = test_output['PM25_Concentration'].values
+    def load_test(self, set_name):
+        test_data = pd.read_csv(Config.data_path+'fold'+self.fold+'/test_'+str(set_name)+'_data_'+self.suffix+'.csv.gz')
 
         X, y, self.test_data = self.common(test_data)
+        if set_name == 'context:':
+            y = y - self.y_mean
 
         X[self.cont_cols] = self.Xscaler.transform(X[self.cont_cols])
         # print(X.head(5))

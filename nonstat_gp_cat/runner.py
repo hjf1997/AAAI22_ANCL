@@ -8,7 +8,7 @@ node = 'gpu4'
 nsgp_iters = 40
 gp_iters = 50
 restarts = 5
-div = 4
+div = 1
 sampling = 'uni' # cont, nn, uni
 Xcols = '@'.join(['longitude', 'latitude', 'humidity', 'temperature', 'weather', 'wind_direction', 'wind_speed', 'delta_t'])
 # Xcols = '@'.join(['longitude', 'latitude', 'temperature', 'humidity', 'wind_speed',
@@ -21,22 +21,22 @@ Xcols = '@'.join(['longitude', 'latitude', 'humidity', 'temperature', 'weather',
 #        'wind_direction_13.0', 'wind_direction_14.0', 'wind_direction_23.0',
 #        'wind_direction_24.0', 'delta_t'])
 kernel = 'rbf' # Order: RBF, M32
-time_kernel = 'local_per' # Order RBF, loc_per
+time_kernel = 'loc_periodic' # Order RBF, loc_per
 # ['longitude', 'latitude', 'humidity', 'temperature', 'weather', 'wind_direction', 'wind_speed', 'delta_t']
 
 sampling = 'nn'
-os.system(' '.join(['python run.py', model_name, optim_name, c_fold, 'gpu1', 
+os.system(' '.join(['python run.py', model_name, optim_name, c_fold,
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
-os.system(' '.join(['python run.py', model_name, optim_name, '1', 'gpu1', 
+os.system(' '.join(['python run.py', model_name, optim_name, '1',
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
-os.system(' '.join(['python run.py', model_name, optim_name, '2', 'gpu2', 
+os.system(' '.join(['python run.py', model_name, optim_name, '2',
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
 sampling = 'uni'
-os.system(' '.join(['python run.py', model_name, optim_name, c_fold, 'gpu2', 
+os.system(' '.join(['python run.py', model_name, optim_name, c_fold,
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
-os.system(' '.join(['python run.py', model_name, optim_name, '1', 'gpu3', 
+os.system(' '.join(['python run.py', model_name, optim_name, '1',
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
-os.system(' '.join(['python run.py', model_name, optim_name, '2', 'gpu3', 
+os.system(' '.join(['python run.py', model_name, optim_name, '2',
                 str(nsgp_iters), str(gp_iters), str(restarts), str(div), sampling, Xcols, kernel, time_kernel]))
 ### Running all
 # optim_name = 'ad'

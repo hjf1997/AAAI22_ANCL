@@ -124,16 +124,11 @@ class NSGP(torch.nn.Module):
             v = torch.cholesky_solve(k_star.T, chol)
 
             k_post = k_star_star - k_star@v
-            # k_post_det = torch.det(k_post)
-            # k_post_det = torch.clamp(k_post_det, min=10**-20)
-            # if k_post_det<=0:
-            #     k_post_det = torch.tensor(10**-20)
-            # B = torch.log(k_post_det).reshape(-1,1)
-
-            dk_post = k_post.diagonal()
-            dk_post += self.jitter*10
-            post_chol = torch.linalg.cholesky(k_post)
-            B = torch.sum(torch.log(post_chol.diagonal()))
+            k_post_det = torch.det(k_post)
+            k_post_det = torch.clamp(k_post_det, min=10**-20)
+            if k_post_det<=0:
+                k_post_det = torch.tensor(10**-20)
+            B = torch.log(k_post_det).reshape(-1,1)
             return l, B
         else:
             return l
@@ -143,6 +138,7 @@ class NSGP(torch.nn.Module):
         sum_scaled_dist = None
         B_all = None
         for d in range(X1.shape[1]):
+            # Cat feature
             if self.cat_indicator[d] == 1:
                 dist = X1[:, None, d] != X2[None, :, d]
                 scaled_dist = 0.5 * dist/self.local_ls[d]**2
@@ -168,6 +164,7 @@ class NSGP(torch.nn.Module):
                     prefix = prefix * torch.sqrt(2 * l1@l2.T / lsq)
                 if self.debug:
                     input('2:')
+                # 处理时间
                 if self.time_indicator[d]==1:
                     if self.timekernel == 'loc_periodic':
                         scaled_dist = (4 * torch.square(torch.sin(self.pi * torch.abs(X1[:, None, d] - X2[None, :, d])/self.period)) +\
